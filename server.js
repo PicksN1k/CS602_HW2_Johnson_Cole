@@ -54,7 +54,25 @@ app.get('/cid/:id', function(req, res) {
 	let id = req.params.id;
 	let result = courseDB.lookupByCourseId(id);
 
-	// Fill in the code for JSON, XML, and HTML formats
+	if (req.accepts('json')) {
+    res.json(result);
+	}
+	else if (req.accepts('xml')) {
+    	let xml = '<?xml version="1.0"?><courses>';
+
+    	result.forEach(course => {
+        	xml += `<course><course_id>${course.course_id}</course_id><course_name>${course.course_name}</course_name></course>`;
+    	});
+
+    	xml += '</courses>';
+
+    	res.type('application/xml');
+    	res.send(xml);
+	}
+	else {
+    	res.render('lookupByCourseIdView',
+        	{ query: id, courses: result });
+	}
 
 	
 });
@@ -63,21 +81,59 @@ app.get('/cid/:id', function(req, res) {
 
 app.get('/cname', function(req, res) {
 	
-	// Fill in the code
+	app.get('/cname', function(req, res) {
+
+    if (req.query.name) {
+        let name = req.query.name;
+        let result = courseDB.lookupByCourseName(name);
+
+        res.render('lookupByCourseNameView',
+            { query: name, courses: result });
+    }
+    else {
+        res.render('lookupByCourseNameForm');
+    }
 
 });
 
 app.post('/cname', function(req, res) {
 	
-	// Fill in the code
+	app.post('/cname', function(req, res) {
+
+    let name = req.body.name;
+    let result = courseDB.lookupByCourseName(name);
+
+    res.render('lookupByCourseNameView',
+        { query: name, courses: result });
+
 });
 
 app.get('/cname/:name', function(req, res) {
 	let name = req.params.name;
 	let result = courseDB.lookupByCourseName(name);
 
-	// Fill in the code for JSON, XML, and HTML formats
+	if (req.accepts('json')) {
+    res.json(result);
+	}
+	else if (req.accepts('xml')) {
 
+    	let xml = '<?xml version="1.0"?><courses>';
+
+    	result.forEach(course => {
+        	xml += `<course><course_id>${course.course_id}</course_id><course_name>${course.course_name}</course_name></course>`;
+    	});
+
+    	xml += '</courses>';
+
+    	res.type('application/xml');
+    	res.send(xml);
+	}
+	else {
+
+    	res.render('lookupByCourseNameView',
+        	{ query: name, courses: result });
+
+	}
 });
 
 
