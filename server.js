@@ -80,58 +80,55 @@ app.get('/cid/:id', function(req, res) {
 
 
 app.get('/cname', function(req, res) {
-	
-	app.get('/cname', function(req, res) {
 
-    if (req.query.name) {
-        let name = req.query.name;
-        let result = courseDB.lookupByCourseName(name);
+	if (req.query.name) {
+		let name = req.query.name;
+		let result = courseDB.lookupByCourseName(name);
 
-        res.render('lookupByCourseNameView',
-            { query: name, courses: result });
-    }
-    else {
-        res.render('lookupByCourseNameForm');
-    }
+		res.render('lookupByCourseNameView',
+			{ query: name, courses: result });
+	}
+	else {
+		res.render('lookupByCourseNameForm');
+	}
 
 });
 
 app.post('/cname', function(req, res) {
-	
-	app.post('/cname', function(req, res) {
 
-    let name = req.body.name;
-    let result = courseDB.lookupByCourseName(name);
+	let name = req.body.name;
+	let result = courseDB.lookupByCourseName(name);
 
-    res.render('lookupByCourseNameView',
-        { query: name, courses: result });
+	res.render('lookupByCourseNameView',
+		{ query: name, courses: result });
 
 });
 
 app.get('/cname/:name', function(req, res) {
+
 	let name = req.params.name;
 	let result = courseDB.lookupByCourseName(name);
 
 	if (req.accepts('json')) {
-    res.json(result);
+		res.json(result);
 	}
 	else if (req.accepts('xml')) {
 
-    	let xml = '<?xml version="1.0"?><courses>';
+		let xml = '<?xml version="1.0"?><courses>';
 
-    	result.forEach(course => {
-        	xml += `<course><course_id>${course.course_id}</course_id><course_name>${course.course_name}</course_name></course>`;
-    	});
+		result.forEach(course => {
+			xml += `<course><course_id>${course.course_id}</course_id><course_name>${course.course_name}</course_name></course>`;
+		});
 
-    	xml += '</courses>';
+		xml += '</courses>';
 
-    	res.type('application/xml');
-    	res.send(xml);
+		res.type('application/xml');
+		res.send(xml);
 	}
 	else {
 
-    	res.render('lookupByCourseNameView',
-        	{ query: name, courses: result });
+		res.render('lookupByCourseNameView',
+			{ query: name, courses: result });
 
 	}
 });
