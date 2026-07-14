@@ -1,1 +1,7 @@
-<b>Course Name Query </b>
+<b>Course Name Query {{query}}</b>
+
+<ul>
+{{#each courses}}
+    <li>{{course_id}} - {{course_name}}</li>
+{{/each}}
+</ul>
